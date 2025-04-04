@@ -1,6 +1,6 @@
 {
 	"name": "@timberland/emitters",
-	"version": "0.0.0",
+	"version": "0.0.1",
 	"description": "Lightweight reactivity library for vanilla JS",
 	"type": "module",
 	"main": "src/index.js",
@@ -12,12 +12,14 @@
 		"version": "changeset version",
 		"release": "changeset publish"
 	},
-	"keywords": ["reactivity"],
+	"keywords": [
+		"reactivity"
+	],
 	"author": "Álvaro Palma Mancheño",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/timberlandstack/emitters.git"
-  	},
+	},
 	"license": "MIT",
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
