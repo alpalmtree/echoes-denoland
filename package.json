@@ -12,9 +12,7 @@
 		"version": "changeset version",
 		"release": "changeset publish"
 	},
-	"keywords": [
-		"reactivity"
-	],
+	"keywords": ["reactivity"],
 	"author": "Álvaro Palma Mancheño",
 	"repository": {
 		"type": "git",
@@ -26,10 +24,7 @@
 		"vitest": "^3.0.9",
 		"@changesets/cli": "^2.28.1"
 	},
-	"files": [
-		"src/",
-		"README.md"
-	],
+	"files": ["src/", "README.md"],
 	"publishConfig": {
 		"access": "public"
 	},

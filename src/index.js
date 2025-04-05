@@ -10,8 +10,6 @@ export class Emitter {
 		return this.#value;
 	}
 
-	
-
 	next(data) {
 		typeof data === "function" ? data(this.#value) : (this.#value = data);
 
