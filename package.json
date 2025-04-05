@@ -13,7 +13,7 @@
     "version:test": "changeset version --snapshot charmander",
     "release": "changeset publish",
     "release:test": "changeset publish --no-git-tag --tag charmander",
-    "minify": "esbuild src/index.js --minify --outfile=dist/emitters.esm.js && esbuild src/index.js --minify --keep-names --format=iife --outfile=dist/emitters.iife.js"
+    "minify": "node ./scripts/minify.js"
   },
   "keywords": [
     "reactivity"
