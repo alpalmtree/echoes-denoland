@@ -11,7 +11,7 @@
     "cs": "changeset",
     "version": "changeset version",
     "version:test": "changeset version --snapshot charmander",
-    "release": "changeset publish",
+    "release": "pnpm run minify && changeset publish",
     "release:test": "changeset publish --no-git-tag --tag charmander",
     "minify": "node ./scripts/minify.js"
   },
