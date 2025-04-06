@@ -1,6 +1,6 @@
 {
   "name": "@timberland/emitters",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Lightweight reactivity library for vanilla JS",
   "type": "module",
   "main": "src/index.js",

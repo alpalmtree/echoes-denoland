@@ -1,5 +1,11 @@
 # @timberland/emitters
 
+## 0.0.3
+
+### Patch Changes
+
+- 8f5d55e: Add dist folder for npm
+
 ## 0.0.2
 
 ### Patch Changes
