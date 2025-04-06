@@ -1,7 +1,7 @@
 export class Emitter {
   #value = null;
   #subscriptions = new Set();
-	
+
   constructor(initialValue) {
     if (typeof initialValue !== "undefined") this.#value = initialValue;
   }

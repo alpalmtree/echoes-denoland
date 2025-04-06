@@ -15,9 +15,7 @@
     "release:test": "changeset publish --no-git-tag --tag charmander",
     "minify": "node ./scripts/minify.js"
   },
-  "keywords": [
-    "reactivity"
-  ],
+  "keywords": ["reactivity"],
   "author": "Álvaro Palma Mancheño",
   "repository": {
     "type": "git",
@@ -30,11 +28,7 @@
     "esbuild": "^0.25.2",
     "vitest": "^3.0.9"
   },
-  "files": [
-    "src/",
-    "dist/",
-    "README.md"
-  ],
+  "files": ["src/", "dist/", "README.md"],
   "publishConfig": {
     "access": "public"
   },
