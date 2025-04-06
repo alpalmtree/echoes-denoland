@@ -1,5 +1,11 @@
 # @timberland/emitters
 
+## 0.0.4
+
+### Patch Changes
+
+- 75d62f2: Add documentation on README
+
 ## 0.0.3
 
 ### Patch Changes
