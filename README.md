@@ -1,4 +1,4 @@
-# Timberland - Emitters
+# Timberland - Emitters <!-- omit in toc -->
 The `emitters` package is a very simple and straight-forward implementation of the [Observer Pattern](https://www.patterns.dev/vanilla/observer-pattern/). It also takes inspiration from several niceties found in [RxJs](https://github.com/ReactiveX/rxjs) and [Signals](https://github.com/preactjs/signals), such as:
 - Explicit `subscribe` and  `unsubscribe` methods (RxJs)
 - `until` method (RxJs)
@@ -9,22 +9,25 @@ Besides:
 - Create events that are **not value dependent**. If you don't need your reactivity to be attached to any specific value, just use the Emitters for triggering events
 - Less than **500b** minified + gzipped
 
-## Project status
+## Project status <!-- omit in toc -->
 This package is pretty new and we don't expect a crazy wild adoption. The API and the implementation are fairly simple, but please be aware that bugs might appear. If you find anything strange, please let us know by opening an issue.
 
 Even though it's under active development, the API is stable and it's very unlikely to change. However, until we don't hit a v1, we cannot ensure that the API will remain intact. There are still a lot of work to do and we will try our best to not change the usage. But if a fix requires changing the API in order to keep the bundle size small, we should be open to minor adjustments.
 
 - [Installation](#installation)
-- [Reference](#reference-apiusage)
-    - [`new Emitter(optionalInitialValue)`](#new-emitteroptionalinitialvalue)
-        - [`Emitter.value`](#emittervalue)
-        - [`Emitter#subscribe`](#emittersubscribe)
-        - [`Emitter#next`](#emitternext)
-    - [`new ComputedEmitter(callback, [dependencies])`](#new-computedemittercallback-dependencies)
-    - [`Subscription`](#subscription)
-        - [`Subscription#unsubscribe`](#subscriptionunsubscribe)
-        - [`Subscription#until`](#subscriptionuntil)
-        - [`Subscription#trigger(optionalMessage)`](#subscriptiontriggeroptionalmessage)
+  - [With a package manager](#with-a-package-manager)
+  - [With a CDN](#with-a-cdn)
+- [Reference (API/Usage)](#reference-apiusage)
+  - [`new Emitter(optionalInitialValue)`](#new-emitteroptionalinitialvalue)
+    - [`Emitter.value`](#emittervalue)
+    - [`Emitter#subscribe`](#emittersubscribe)
+    - [`Emitter#next`](#emitternext)
+  - [`new ComputedEmitter(callback, [dependencies])`](#new-computedemittercallback-dependencies)
+  - [`Subscription`](#subscription)
+    - [`Subscription#unsubscribe`](#subscriptionunsubscribe)
+    - [`Subscription#until`](#subscriptionuntil)
+    - [`Subscription#trigger(optionalMessage)`](#subscriptiontriggeroptionalmessage)
+- [License](#license)
 
 ## Installation
 ### With a package manager
@@ -114,7 +117,7 @@ The `ComputedEmitter` constructor returns an Emitter-like object with only a `su
 const $double = new ComputedEmitter(() => $count.value * 2, [ $count ])
 ```
 
-Behind the scenes, it is creating an internal Emitter whose value is being updated everytime the value of any of its dependencies change:
+Behind the scenes, it is creating an internal Emitter whose value is being updated every time the value of any of its dependencies change:
 
 ```javascript
 $double.subscribe((value) => console.log(value))
@@ -130,11 +133,11 @@ This will clear the subscription on-demand:
 
 ```javascript
 const $count = new Emitter(0)
-const subscription = $count.subscribe((count) => console.log(count))
+const subscription = $count.subscribe((value) => console.log(value))
 
-$count.next( count.value + 1 ) // -> will log 1
+$count.next( $count.value + 1 ) // -> will log 1
 subscription.unsubscribe()
-$count.next( count.value + 1 ) // -> won't log anything
+$count.next( $count.value + 1 ) // -> won't log anything
 ```
 
 #### `Subscription#until`
@@ -142,14 +145,13 @@ Heavily inspired by the `takeUntil` method from RxJs. Useful when we want the su
 
 ```javascript
 const $count = new Emitter(0)
-const subscription = $count.subscribe((count) => console.log(count))
+const subscription = $count.subscribe((value) => console.log(value))
 
-subscription.until((value) => value > 3)
+subscription.until((value) => value > 2)
 
-$count.next( count.value + 1 ) // -> will log 1
-$count.next( count.value + 1 ) // -> will log 2
-$count.next( count.value + 1 ) // -> will log 3
-$count.next( count.value + 1 ) // -> won't log anything
+$count.next( $count.value + 1 ) // -> will log 1
+$count.next( $count.value + 1 ) // -> will log 2
+$count.next( $count.value + 1 ) // -> won't log anything
 ```
 
 #### `Subscription#trigger(optionalMessage)`
