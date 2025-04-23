@@ -1,66 +1,75 @@
 import { expect } from "vitest";
-import { Emitter, ComputedEmitter } from "../src";
+import { echo, computed } from "../src";
 
-describe("Emitter", () => {
+describe("Echo", () => {
   it("should accept an initial value", () => {
-    const emitter = new Emitter(0);
-    expect(emitter.value).toBe(0);
+    const source = echo(0);
+    expect(source.value).toBe(0);
   });
 
   it("should have a subscribe method", () => {
-    const emitter = new Emitter();
-    expect(emitter.subscribe).toBeDefined();
+    const source = echo();
+    expect(source.listen).toBeDefined();
   });
 
   it("should have a next method", () => {
-    const emitter = new Emitter();
-    expect(emitter.next).toBeDefined();
+    const source = echo();
+    expect(source.next).toBeDefined();
   });
 
   it("should work with any kind of value", () => {
-    const emitter = new Emitter([1, 2]);
+    const source = echo([1, 2]);
     let logs = [];
-    emitter.subscribe((val) => (logs = val));
-    emitter.next((val) => val.push(3));
+    source.listen((val) => (logs = val));
+    source.next((val) => val.push(3));
     expect(logs).toEqual([1, 2, 3]);
   });
 
-  it("should run as soon as declared if lazy is set to false", () => {
-    const emitter = new Emitter(0);
+  it("should run as soon as declared only if lazy is set to true", () => {
+    const source = echo(0);
     let count = 0;
-    emitter.subscribe(() => count++, { lazy: false });
+    source.listen(() => count++, { lazy: true });
+    expect(count).toBe(0);
+    source.next(1);
     expect(count).toBe(1);
-    emitter.next(1);
-    expect(count).toBe(2);
   });
 });
 
-describe("ComputedEmitter", () => {
+describe("Computed", () => {
   it("should accept a callback and dependencies", () => {
-    const emitter = new ComputedEmitter(() => 0, []);
-    expect(emitter.value).toBe(0);
+    const source = computed(() => 0, []);
+    expect(source.value).toBe(0);
   });
 
   it("should have a subscribe method", () => {
-    const emitter = new ComputedEmitter(() => 0, []);
-    expect(emitter.subscribe).toBeDefined();
+    const source = computed(() => 0, []);
+    expect(source.listen).toBeDefined();
   });
 
   it("should have a value getter", () => {
-    const emitter = new ComputedEmitter(() => 0, []);
-    expect(emitter.value).toBeDefined();
+    const source = computed(() => 0, []);
+    expect(source.value).toBeDefined();
   });
 
   it("should not have a next method", () => {
-    const emitter = new ComputedEmitter(() => 0, []);
-    expect(emitter.next).toBeUndefined();
+    const source = computed(() => 0, []);
+    expect(source.next).toBeUndefined();
   });
 
   it("should update when a dependency changes", () => {
-    const $count = new Emitter(0);
-    const $double = new ComputedEmitter(() => $count.value * 2, [$count]);
+    const $count = echo(0);
+    const $double = computed(() => $count.value * 2, [$count]);
     expect($double.value).toBe(0);
 
+    $count.next(1);
+    expect($double.value).toBe(2);
+  });
+
+  it("should trigger the listeners when its value change", () => {
+    const logs = [];
+    const $count = echo(0);
+    const $double = computed(() => $count.value * 2, [$count]);
+    $double.listen((val) => logs.push(val));
     $count.next(1);
     expect($double.value).toBe(2);
   });
@@ -68,40 +77,40 @@ describe("ComputedEmitter", () => {
 
 describe("Subscription", () => {
   it("should clear the subscription", () => {
-    const emitter = new Emitter(0);
+    const source = echo();
     let count = 0;
-    const listener = emitter.subscribe(() => count++);
-    emitter.next(1);
-    listener.unsubscribe();
-    emitter.next(2);
-    expect(count).toBe(1);
+    const listener = source.listen(() => count++);
+    source.next();
+    listener.mute();
+    source.next();
+    expect(count).toBe(2);
   });
 
   it("should clear the subscription with the until method", () => {
-    const emitter = new Emitter(0);
+    const source = echo(0);
     let count = 0;
-    const listener = emitter.subscribe(() => count++);
+    const listener = source.listen(() => count++);
     listener.until((val) => val > 2);
 
-    emitter.next(1);
-    emitter.next(4);
-    expect(count).toBe(1);
+    source.next(2);
+    source.next(4);
+    expect(count).toBe(2);
   });
 
   it("should trigger a callback", () => {
-    const emitter = new Emitter(0);
+    const source = echo(0);
     let count = 0;
-    const listener = emitter.subscribe(() => count++);
+    const listener = source.listen(() => count++, { lazy: true });
     listener.trigger();
     expect(count).toBe(1);
   });
 
   it("should trigger a callback with a message without modifying the original value", () => {
-    const emitter = new Emitter();
+    const source = echo();
     let message = "Whatever";
-    const listener = emitter.subscribe((val) => (message = val));
+    const listener = source.listen((val) => (message = val));
     listener.trigger("Hello world!");
     expect(message).toBe("Hello world!");
-    expect(emitter.value).toBe(null);
+    expect(source.value).toBe(null);
   });
 });

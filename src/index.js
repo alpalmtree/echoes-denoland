@@ -1,57 +1,50 @@
-export class Emitter {
-  #value = null;
-  #subscriptions = new Set();
+export const echo = (initialValue) => {
+  let value = null;
+  const listeners = new Set();
 
-  constructor(initialValue) {
-    if (typeof initialValue !== "undefined") this.#value = initialValue;
-  }
+  if (typeof initialValue !== "undefined") value = initialValue;
 
-  get value() {
-    return this.#value;
-  }
+  return {
+    get value() {
+      return value;
+    },
+    next(data) {
+      typeof data === "function" ? data(value) : (value = data);
 
-  next(data) {
-    typeof data === "function" ? data(this.#value) : (this.#value = data);
+      listeners.forEach(({ until }) => until && until());
+      listeners.forEach(({ cb }) => cb(value));
+    },
+    listen(cb, options = { lazy: false }) {
+      const listener = { cb };
+      listeners.add(listener);
+      if (!options.lazy) cb(value);
 
-    this.#subscriptions.forEach(({ until }) => until && until());
-    this.#subscriptions.forEach(({ cb }) => cb(this.#value));
-  }
-  subscribe(cb, options = { lazy: true }) {
-    const listener = { cb };
-    this.#subscriptions.add(listener);
-    if (!options.lazy) cb(this.#value);
+      const subscription = {
+        mute: () => listeners.delete(listener),
+        until: (condition) => {
+          listener.until = () =>
+            condition(value) ? subscription.mute() : null;
+        },
+        trigger: (message) => cb(message),
+      };
 
-    const subscription = {
-      unsubscribe: () => this.#subscriptions.delete(listener),
-      until: (condition) => {
-        listener.until = () =>
-          condition(this.#value) ? subscription.unsubscribe() : null;
-      },
-      trigger: (message) => cb(message),
-    };
-
-    return subscription;
-  }
-}
-
-export class ComputedEmitter {
-  #internalEmitter = null;
-  #dependencies = null;
-
-  constructor(cb, dependencies) {
-    this.#dependencies = new Set(dependencies);
-    this.#internalEmitter = new Emitter(cb());
-
-    this.#dependencies.forEach((dep) => {
-      dep.subscribe(() => this.#internalEmitter.next(cb()));
-    });
-  }
-
-  get value() {
-    return this.#internalEmitter.value;
-  }
-
-  subscribe = (cb, options = { lazy: true }) => {
-    return this.#internalEmitter.subscribe(cb, options);
+      return subscription;
+    },
   };
-}
+};
+
+export const computed = (cb, dependencies) => {
+  const _dependencies = new Set(dependencies);
+  const internalEcho = echo(cb());
+
+  _dependencies.forEach((dep) => {
+    dep.listen(() => internalEcho.next(cb()));
+  });
+
+  return {
+    get value() {
+      return internalEcho.value;
+    },
+    listen: internalEcho.listen,
+  };
+};
