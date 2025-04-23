@@ -4,7 +4,7 @@ import process from "node:process";
 await esbuild.build({
   entryPoints: [`${process.cwd()}/src/index.js`],
   bundle: true,
-  outfile: "dist/emitters.esm.js",
+  outfile: "dist/echoes.esm.js",
   minify: true,
   format: "esm",
 });
@@ -12,8 +12,8 @@ await esbuild.build({
 await esbuild.build({
   entryPoints: [`${process.cwd()}/src/index.js`],
   bundle: true,
-  outfile: "dist/emitters.iife.js",
+  outfile: "dist/echoes.iife.js",
   minify: true,
   format: "iife",
-  globalName: "emitters",
+  globalName: "Echoes",
 });

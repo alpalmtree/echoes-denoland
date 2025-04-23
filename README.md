@@ -1,5 +1,5 @@
-# Timberland - Emitters <!-- omit in toc -->
-The `emitters` package is a very simple and straight-forward implementation of the [Observer Pattern](https://www.patterns.dev/vanilla/observer-pattern/). It also takes inspiration from several niceties found in [RxJs](https://github.com/ReactiveX/rxjs) and [Signals](https://github.com/preactjs/signals), such as:
+# Echoes <!-- omit in toc -->
+The `echoes` package is a very simple and straight-forward implementation of the [Observer Pattern](https://www.patterns.dev/vanilla/observer-pattern/). It also takes inspiration from several niceties found in [RxJs](https://github.com/ReactiveX/rxjs) and [Signals](https://github.com/preactjs/signals), such as:
 - Explicit `subscribe` and  `unsubscribe` methods (RxJs)
 - `until` method (RxJs)
 - Computed reactive values (Signals)
