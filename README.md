@@ -1,4 +1,9 @@
 # Echoes <!-- omit in toc -->
+
+> This is a fork of https://github.com/timberstack/echoes. I wanted to try out denoland as a CDN deploy platform, given the return of `deno bundle` in version 2.4 and its support for bundling for the browser.
+
+> You can just import the exported functions from "https://deno.land/x/echoes@v0.0.2/mod.js". If you have Deno enabled in the workspace, you'll see the intellisense working as expected. Yay!
+
 The `echoes` package is a very simple and straight-forward implementation of the [Observer Pattern](https://www.patterns.dev/vanilla/observer-pattern/). It also takes inspiration from several niceties found in [RxJs](https://github.com/ReactiveX/rxjs) and [Signals](https://github.com/preactjs/signals), such as:
 - Explicit `subscribe` and  `unsubscribe`-like methods (RxJs)
 - `until` method (RxJs)
@@ -15,8 +20,6 @@ This package is pretty new and we don't expect a crazy wild adoption. The API an
 Even though it's under active development, the API is stable and it's very unlikely to change. However, until we don't hit a v1, we cannot ensure that the API will remain intact. There are still a lot of work to do and we will try our best to not change the usage. But if a fix requires changing the API in order to keep the bundle size small, we should be open to minor adjustments.
 
 - [Installation](#installation)
-  - [With a package manager](#with-a-package-manager)
-  - [With a CDN](#with-a-cdn)
 - [Reference (API/Usage)](#reference-apiusage)
   - [`echo(optionalInitialValue)`](#echooptionalinitialvalue)
     - [`echo.value`](#echovalue)
@@ -30,32 +33,10 @@ Even though it's under active development, the API is stable and it's very unlik
 - [License](#license)
 
 ## Installation
-### With a package manager
-```bash
-pnpm add @timberstack/echoes
-...
-```
 
-```javascript
-import { echo, computed } from "@timberstack/echoes"
+```js
+import { echo, computed } from "https://deno.land/x/echoes@v0.0.2/mod.js"
 ```
-
-### With a CDN
-```html
-<!-- ESM -->
-<script type="module">
-    import { echo, computed } from "https://unpkg.com/@timberstack/echoes/dist/echoes.esm.js"
-</script>
-
-<!-- IIFE -->
-<script src="https://unpkg.com/@timberstack/echoes/dist/echoes.iife.js"></script>
-<script>
-    // Stored under the emitters global name so we don't pollute the global scope
-    const { echo, computed } = window.Echoes 
-</script>
-```
-> [!CAUTION] 
-> These examples should be used for development only. If you plan to use the CDN for production, pin a specific version. For instance: `https://unpkg.com/@timberland/emitters@0.0.4/dist/emitters.esm.js`. Check the releases section for getting the latest version.
 
 ## Reference (API/Usage)
 ### `echo(optionalInitialValue)`
